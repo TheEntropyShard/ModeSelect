@@ -4,11 +4,11 @@
   "package": "org.example.exmod.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerMixin"
+
   ],
   "client": [
-    "MainMenuMixin",
-    "HotbarMixin"
+    "InGameMixin",
+    "UiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

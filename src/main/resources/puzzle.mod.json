@@ -12,13 +12,13 @@
   },
   "entrypoints": {
     "client_init": [
-      "org.example.exmod.ClientInitializer"
+      "org.example.exmod.ModeSelect"
     ],
     "init": [
       "org.example.exmod.ExampleMod"
     ],
     "preInit": [
-      "org.example.exmod.ExampleModPreinit"
+
     ]
   },
   "mixins": [
