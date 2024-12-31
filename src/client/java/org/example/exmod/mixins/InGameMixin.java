@@ -2,23 +2,18 @@ package org.example.exmod.mixins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import finalforeach.cosmicreach.entities.player.Gamemode;
 import finalforeach.cosmicreach.entities.player.Player;
 import finalforeach.cosmicreach.gamestates.GameState;
 import finalforeach.cosmicreach.gamestates.InGame;
-import finalforeach.cosmicreach.items.Item;
-import finalforeach.cosmicreach.rendering.items.ItemRenderer;
 import finalforeach.cosmicreach.ui.FontRenderer;
 import finalforeach.cosmicreach.ui.UI;
-import finalforeach.cosmicreach.ui.widgets.ItemSlotWidget;
 import org.example.exmod.ModeSelect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,7 +23,14 @@ public class InGameMixin extends GameState {
     @Shadow
     private static Player localPlayer;
 
-    private static Texture fluidVacuumTexture = new Texture(Gdx.files.internal("base/textures/items/fluid_vacuum.png"));
+    @Unique
+    private static final Texture exampleMod$fluidVacuumTexture = new Texture(Gdx.files.internal("assets/example-mod/images/blue_light.png"));
+
+    @Unique
+    private static final Texture exampleMod$ironPickaxeTexture = new Texture(Gdx.files.internal("base/textures/items/pickaxe_iron.png"));
+
+    @Unique
+    private static final Vector2 exampleMod$textDimTmp = new Vector2();
 
     @Inject(method = "render", at = @At("TAIL"))
     private void renderSelector(CallbackInfo ci) {
@@ -41,56 +43,87 @@ public class InGameMixin extends GameState {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
-            if (InGameMixin.localPlayer.gamemode == Gamemode.SURVIVAL) {
-                InGameMixin.localPlayer.gamemode = Gamemode.CREATIVE;
-                InGameMixin.localPlayer.getEntity().noClip = true;
-            } else if (InGameMixin.localPlayer.gamemode == Gamemode.CREATIVE) {
-                InGameMixin.localPlayer.gamemode = Gamemode.SURVIVAL;
-                InGameMixin.localPlayer.getEntity().noClip = false;
-            }
+            InGameMixin.exampleMod$switchGamemode();
         }
 
-        String gamemodeText;
-
-        if (InGameMixin.localPlayer.gamemode == Gamemode.SURVIVAL) {
-            gamemodeText = "Survival";
-        } else if (InGameMixin.localPlayer.gamemode == Gamemode.CREATIVE) {
-            gamemodeText = "Creative";
-        } else {
-            throw new RuntimeException("Player has unexpected gamemode! " + InGameMixin.localPlayer.gamemode);
-        }
-
-        Vector2 textDim = new Vector2();
-        FontRenderer.getTextDimensions(super.uiViewport, gamemodeText, textDim);
+        String gamemodeText = InGameMixin.exampleMod$getGamemodeText();
 
         GameState.batch.begin();
 
+        FontRenderer.getTextDimensions(super.uiViewport, gamemodeText, InGameMixin.exampleMod$textDimTmp);
         FontRenderer.drawText(
                 GameState.batch,
                 super.uiViewport,
                 gamemodeText,
-                -(textDim.x / 2), (float) (ModeSelect.boxPosY + textDim.y)
+                -(InGameMixin.exampleMod$textDimTmp.x / 2),
+                ModeSelect.BOX_POS_Y + InGameMixin.exampleMod$textDimTmp.y
         );
 
-        textDim.set(0, 0);
-        FontRenderer.getTextDimensions(super.uiViewport, "[ F5 ] Next", textDim);
-
+        FontRenderer.getTextDimensions(super.uiViewport, "[F5] Next", InGameMixin.exampleMod$textDimTmp);
         FontRenderer.drawText(
                 GameState.batch,
                 super.uiViewport,
-                "[ F5 ] Next",
-                -(textDim.x / 2), (float) (ModeSelect.boxPosY) + ModeSelect.BOX_HEIGHT - textDim.y * 2
+                "[F5] Next",
+                -(InGameMixin.exampleMod$textDimTmp.x / 2), ModeSelect.BOX_POS_Y + ModeSelect.BOX_HEIGHT - InGameMixin.exampleMod$textDimTmp.y * 2
+        );
+
+        InGameMixin.exampleMod$drawContainer(ModeSelect.CREATIVE_POS_X, InGameMixin.localPlayer.gamemode == Gamemode.CREATIVE);
+        InGameMixin.exampleMod$drawItemTexture(
+                InGameMixin.exampleMod$fluidVacuumTexture,
+                ModeSelect.CREATIVE_POS_X + 2, ModeSelect.ITEMS_POS_Y + 2,
+                28, 28
+        );
+
+        InGameMixin.exampleMod$drawContainer(ModeSelect.SURVIVAL_POS_X, InGameMixin.localPlayer.gamemode == Gamemode.SURVIVAL);
+        InGameMixin.exampleMod$drawItemTexture(
+                InGameMixin.exampleMod$ironPickaxeTexture,
+                ModeSelect.SURVIVAL_POS_X + 3, ModeSelect.ITEMS_POS_Y + 3,
+                26, 26
         );
 
         GameState.batch.end();
+    }
 
-        GameState.batch.begin();
+    @Unique
+    private static String exampleMod$getGamemodeText() {
+        if (InGameMixin.localPlayer.gamemode == Gamemode.SURVIVAL) {
+            return "Survival";
+        } else if (InGameMixin.localPlayer.gamemode == Gamemode.CREATIVE) {
+            return "Creative";
+        } else {
+            throw new RuntimeException("Player has unexpected gamemode! " + InGameMixin.localPlayer.gamemode);
+        }
+    }
 
-        GameState.batch.draw(UI.container9Patch.getTexture(), 0, 0);
+    @Unique
+    private static void exampleMod$switchGamemode() {
+        if (InGameMixin.localPlayer.gamemode == Gamemode.SURVIVAL) {
+            InGameMixin.localPlayer.gamemode = Gamemode.CREATIVE;
+            InGameMixin.localPlayer.getEntity().noClip = true;
+        } else if (InGameMixin.localPlayer.gamemode == Gamemode.CREATIVE) {
+            InGameMixin.localPlayer.gamemode = Gamemode.SURVIVAL;
+            InGameMixin.localPlayer.getEntity().noClip = false;
+        }
+    }
 
+    @Unique
+    private static void exampleMod$drawContainer(float x, boolean selected) {
+        if (selected) {
+            GameState.batch.draw(UI.containerSelected9Patch.getTexture(), x, ModeSelect.ITEMS_POS_Y);
+        } else {
+            GameState.batch.draw(UI.container9Patch.getTexture(), x, ModeSelect.ITEMS_POS_Y);
+        }
+    }
 
-        GameState.batch.draw(fluidVacuumTexture, 0, 0, 30, 30);
-
-        GameState.batch.end();
+    @Unique
+    private static void exampleMod$drawItemTexture(Texture texture, float x, float y, int width, int height) {
+        GameState.batch.draw(
+                texture,
+                x, y,
+                width, height,
+                0, 0,
+                texture.getWidth(), texture.getHeight(),
+                false, true
+        );
     }
 }

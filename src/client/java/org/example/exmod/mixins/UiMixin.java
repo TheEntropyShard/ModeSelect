@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(UI.class)
 public class UiMixin {
     @Unique
-    private static final Color background = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.4f);
+    private static final Color exampleMod$background = new Color(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, 0.4f);
 
     @Shadow
     public static boolean renderUI;
@@ -39,21 +39,29 @@ public class UiMixin {
         Gdx.gl.glBlendFunc(770, 771);
         Gdx.gl.glCullFace(1028);
 
+        this.exampleMod$renderBackground();
+        this.exampleMod$renderFrame();
+    }
+
+    @Unique
+    private void exampleMod$renderBackground() {
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        this.shapeRenderer.setColor(UiMixin.background);
-
-        ModeSelect.boxPosX = -((float) ModeSelect.BOX_WIDTH / 2);
-        ModeSelect.boxPosY = (float) ((-ModeSelect.BOX_HEIGHT) * 1.5);
-
-        this.shapeRenderer.rect(ModeSelect.boxPosX, ModeSelect.boxPosY, ModeSelect.BOX_WIDTH, ModeSelect.BOX_HEIGHT);
+        this.shapeRenderer.setColor(UiMixin.exampleMod$background);
+        this.shapeRenderer.rect(ModeSelect.BOX_POS_X, ModeSelect.BOX_POS_Y, ModeSelect.BOX_WIDTH, ModeSelect.BOX_HEIGHT);
 
         this.shapeRenderer.end();
+    }
 
+    @Unique
+    private void exampleMod$renderFrame() {
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
         this.shapeRenderer.setColor(Color.LIGHT_GRAY);
-        this.shapeRenderer.rect(ModeSelect.boxPosX + 3, ModeSelect.boxPosY + 3, ModeSelect.BOX_WIDTH - 6, ModeSelect.BOX_HEIGHT - 6);
+        this.shapeRenderer.rect(
+                ModeSelect.BOX_POS_X + 3, ModeSelect.BOX_POS_Y + 3,
+                ModeSelect.BOX_WIDTH - 6, ModeSelect.BOX_HEIGHT - 6
+        );
 
         this.shapeRenderer.end();
     }
