@@ -1,32 +1,26 @@
 {
-  "formatVersion": 1,
-  "id": "${mod_id}",
-  "version": "${mod_version}",
-  "name": "${mod_name}",
-  "description": "${mod_desc}",
-  "authors": [
-    "YOU :D"
-  ],
-  "meta": {
-    "icon": "example-mod:icons/icon.png"
-  },
-  "entrypoints": {
-    "client_init": [
-      "org.example.exmod.ModeSelect"
+    "formatVersion": 1,
+    "id": "${mod_id}",
+    "version": "${mod_version}",
+    "name": "${mod_name}",
+    "description": "${mod_desc}",
+    "authors": [
+        "TheEntropyShard"
     ],
-    "init": [
-      "org.example.exmod.ExampleMod"
+    "meta": {
+        "icon": "modeselect:icons/icon.png"
+    },
+    "entrypoints": {
+        "client_init": [
+            "me.theentropyshard.modeselect.ModeSelect"
+        ]
+    },
+    "mixins": [
+        "modeselect.mixins.json"
     ],
-    "preInit": [
-
-    ]
-  },
-  "mixins": [
-    "example.mixins.json"
-  ],
-  "depends": {
-    "cosmic-reach": ">=0.3.6",
-    "puzzle-loader": ">=2.0.9"
-  },
-  "accessManipulator": "example_mod.manipulator"
+    "depends": {
+        "cosmic-reach": ">=0.3.14",
+        "puzzle-loader": ">=2.2.2"
+    },
+    "accessManipulator": "modeselect.manipulator"
 }

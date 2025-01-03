@@ -1,4 +1,4 @@
-package org.example.exmod.mixins;
+package me.theentropyshard.modeselect.mixins;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -10,7 +10,7 @@ import finalforeach.cosmicreach.gamestates.GameState;
 import finalforeach.cosmicreach.gamestates.InGame;
 import finalforeach.cosmicreach.ui.FontRenderer;
 import finalforeach.cosmicreach.ui.UI;
-import org.example.exmod.ModeSelect;
+import me.theentropyshard.modeselect.ModeSelect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,7 +24,7 @@ public class InGameMixin extends GameState {
     private static Player localPlayer;
 
     @Unique
-    private static final Texture exampleMod$fluidVacuumTexture = new Texture(Gdx.files.internal("assets/example-mod/images/blue_light.png"));
+    private static final Texture exampleMod$fluidVacuumTexture = new Texture(Gdx.files.internal("assets/modeselect/images/blue_light.png"));
 
     @Unique
     private static final Texture exampleMod$ironPickaxeTexture = new Texture(Gdx.files.internal("base/textures/items/pickaxe_iron.png"));

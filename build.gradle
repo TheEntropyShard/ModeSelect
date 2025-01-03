@@ -12,7 +12,7 @@ loom {
             sourceSet sourceSets.client
         }
     }
-    accessWidenerPath = file("src/main/resources/example_mod.manipulator")
+    accessWidenerPath = file("src/main/resources/modeselect.manipulator")
 }
 
 repositories {

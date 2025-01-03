@@ -1,4 +1,4 @@
-package org.example.exmod;
+package me.theentropyshard.modeselect;
 
 import com.github.puzzle.core.loader.launch.provider.mod.entrypoint.impls.ClientModInitializer;
 
