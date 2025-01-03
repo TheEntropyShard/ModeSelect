@@ -30,7 +30,7 @@ public class UiMixin {
             return;
         }
 
-        if (!Gdx.input.isKeyPressed(Input.Keys.F4)) {
+        if (!Gdx.input.isKeyPressed(Input.Keys.G)) {
             return;
         }
 

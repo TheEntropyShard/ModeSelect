@@ -38,11 +38,11 @@ public class InGameMixin extends GameState {
             return;
         }
 
-        if (!Gdx.input.isKeyPressed(Input.Keys.F4)) {
+        if (!Gdx.input.isKeyPressed(Input.Keys.G)) {
             return;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
             InGameMixin.exampleMod$switchGamemode();
         }
 
@@ -59,11 +59,11 @@ public class InGameMixin extends GameState {
                 ModeSelect.BOX_POS_Y + InGameMixin.exampleMod$textDimTmp.y
         );
 
-        FontRenderer.getTextDimensions(super.uiViewport, "[F5] Next", InGameMixin.exampleMod$textDimTmp);
+        FontRenderer.getTextDimensions(super.uiViewport, "[H] Next", InGameMixin.exampleMod$textDimTmp);
         FontRenderer.drawText(
                 GameState.batch,
                 super.uiViewport,
-                "[F5] Next",
+                "[H] Next",
                 -(InGameMixin.exampleMod$textDimTmp.x / 2), ModeSelect.BOX_POS_Y + ModeSelect.BOX_HEIGHT - InGameMixin.exampleMod$textDimTmp.y * 2
         );
 
